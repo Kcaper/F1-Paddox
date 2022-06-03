@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "fifth-audio-270211",
+  "private_key_id": "6095eed762c288bb2922e4df65fabf49aec15757",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCr/cl/0h+lzaPs\ntzkIeS21A+gdc1pmR5wiaYKRkekxXfNVbiWBJyz7DmPd4NdDizjdZKM/Dt0lu1Rl\nuyASPnuxRs4lAI9w6+Q2OaJBEVfsgIPixTzp1GEzDC0ElFslc4VFeahWX+xDWGib\ngfe/TXdudaLn5WhPEA5IdNiz+sZq9SMIqfdGcZFPA+b6WUeaCedQGS40XNZ6zAck\nHEfmsvG5bYdmdTD2sxWUiGbjh5VbZC7TJ/c6sWDHYFsgaxb7opQaB4sWDSiXYrbR\nQBJum+QHw60+sJie3smhaDBfxGU4YS2iPYpnrUTDrYjmiUjjtPiCQ00qNzAStKgE\nCrYoq6MLAgMBAAECggEAOIQ3VATYuHOoI6+bkrC7N8nWWuMeeBCc+mPgb3RahAni\n3ZZJxbR5X/A9Gdp58iyMHZgl2qFIQ09Y7ur8IXKd08W4FMmn2Qvy3Gy46BfKZCFg\n9UIp/451+D/OhTw47UgWKZvOGMABk6m4Ci29mwPaNJZ8VyZ3zc8xWlbnJNFJpThp\nQQVmw5pdlfqdde5MRDZPo1sAHiyuOgA0DQVNW79pJLmxkUPWmys7t7ZrqTkm/NjL\nfD7NqWfbYq659UodsO/8JLgEE5eesqeqt5pjZx+/x9or7ZwF+9+VeDbBBXdi/WOH\ni3ViwT2RoOQsTG/Y4j/I470fBg+2pzM5SNE7xppOQQKBgQDfow8lgiezN7MXvse5\nMR4LwluuWXGR3tVCTF8hJUfN24dv5Z7j2PFlytgoVW1ZRtky6fILNiLDwKclEmN8\nA9PoTEEsoFsuB+FK5nuQ43g1x7+exL9SXF51AUVQ9RBiTW6dF8DQcYvmX5K9JrmT\nkriV3GEhstANbjkw+jzcNUMewQKBgQDE4XIANGJ750bIgoVmLU+welajdi0W5O9t\niI8Z6qcMNZf9CuLR9Q/pp/ZgEduuUtjaplKyRcPRVINRdHfSeCow20JZu7WZ14JC\n2Vhun+kkfghfz+sWAp+yfAgci31Ugl5LZHRX4iTUWYPxdGJn/nM0JPcNgI8rW2Hr\nVO0N90JAywKBgD57ChJKqNjTaP/rV1WQOXrDlGXDq407mo1pVPKnvcXv3YkPuDKk\nO91arMWoCGL2/lvRLMShHVlfi9M5rf3J+/xcwaC8NH1JylHozwEN7FnqMski4ukZ\n0XITJtCVhzxPseXF6yLRdmqorRCXryVhypxj8+c8VBBMiUH7x+EmKFiBAoGBAI1o\n4FkFRzd3hn++P9KD+RjoxhHib8Bh7xbdXutef11loSU/DGuBeUx6N5wJN6CeIOPr\nUrp5IYzZBvkajnW9mZA97ApHqMg24njhY4MRmIN9gsZOsKu+drXcIHdgOUTZ3qCI\nJoh5BbsAEKT80zGesWBirJAmJq8dk9dTyHCfiBbBAoGAUz5B/Pi+zOoRXnGWjo+0\nO59kyY8t7rr60e5jpya52zNciuvjfzTokcOljdX1Rh1w2HEBGImLqz7OEkKaa2CW\nB+0X2RHeo0ckLgsNTYEhXaLT+z3fCgavgFuC9s6RNlb4wSkGwtYAHOTIh418qgz1\nU0gWs4EhoI1H3KQqgIIm+FE=\n-----END PRIVATE KEY-----\n",
+  "client_email": "john-111@fifth-audio-270211.iam.gserviceaccount.com",
+  "client_id": "106064444933158305613",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/john-111%40fifth-audio-270211.iam.gserviceaccount.com"
+}

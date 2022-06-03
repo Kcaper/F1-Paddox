@@ -1,0 +1,156 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+html,body
+{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden; 
+}
+
+.App {
+  text-align: center;
+}
+
+.App-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0px;
+  margin-right: 0px;
+  width: 100%;
+  padding: 0px 0px 0px 0px;
+  font-size: calc(10px + 1.5vmin);
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.drivers {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 0px;
+  margin-top: 0px
+}
+
+.drivers li {
+  
+  display: grid;
+  border-radius: 50px;
+  padding: .5em .8em .5em .5em;
+  margin-bottom: 1em;
+  margin-left: .1em;
+  width: 90%;
+
+}
+
+.prediction-driver-container {
+  display: grid;
+  grid-template-columns: 20 65 65 35 65 80;
+  align-items: center;
+  justify-items: space-between;
+}
+
+.prediction-index {
+  margin-left:5px;
+}
+
+.team-icon {
+  margin-left:5px;
+}
+
+.driver-thumb {
+  margin-left:5px;
+}
+
+.driver-code {
+  margin-left:5px;
+}
+
+.driver-flag {
+  margin-left:5px;
+}
+
+.constructor-logo {
+  margin-left:5px;
+}
+
+.drivers p {
+  max-width: none;
+  font-weight: bold;
+  margin: 0;
+  background-color: grey;
+}
+
+.drivers-thumb img {
+  overflow: hidden;
+  flex-shrink: 0;
+  width: 10em;
+  height: 10em;
+  background-color: #e8e8e8;
+  padding: .5em;
+  margin-right: .5em;
+}
+
+.drivers-thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.drivers-flag img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.success-message {
+  font-family: "Roboto", sans-serif;
+  background-color: #3f89f8;
+  padding: 15px;
+  color: white;
+}
+
+span {
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  color: #BD2031;
+  margin-bottom: 15px;
+}
+
+input {
+  background: green;
+}
+
+.error {
+  border-style: solid;
+  border: 2px solid #ffa4a4;
+}
+
+button {
+  background: white;
+  color: #4caf50;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+
+
+
+

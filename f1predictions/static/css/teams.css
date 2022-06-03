@@ -1,0 +1,108 @@
+.app {
+  text-align: center;
+}
+
+.App-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 1.5vmin);
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.characters {
+  list-style: none;
+  padding-left: 0;
+}
+
+.characters li {
+  display: flex;
+  align-items: center;
+  border: solid 0px #d0d0d0;
+  border-radius: .0em;
+  padding: .0em 0em 0em .0em;
+  margin-bottom: .0em;
+}
+
+.characters p {
+  max-width: none;
+  font-weight: bold;
+  margin: 0;
+}
+
+.characters-thumb {
+  overflow: hidden;
+  flex-shrink: 0;
+  width: auto;
+  height: auto;
+  padding: .0em;
+  margin-right: .5em;
+}
+
+.position {
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  left: 0;
+  width: auto;
+  height: auto;
+  padding: .25em;
+  margin-top: .25em; 
+  margin-right: .25em;
+  margin-left: auto;
+  padding: 100px;
+}
+
+.team-icon {
+  overflow: hidden;
+  flex-shrink: 0;
+  width: auto;
+  height: auto;
+  padding: 0em;
+  margin-right: 0em;
+  margin-left: -1em;
+  margin-top: .3em
+}
+
+.driver-name {
+  overflow: hidden;
+  flex-shrink: 0;
+  width: auto;
+  height: auto;
+  align-self: center;
+  padding: .0em;
+  margin-right: 1em;
+  margin-left: .0em;
+}
+
+.flag {
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  right:0;
+  width: auto;
+  height: auto;
+  padding: .25em;
+  margin-top: .25em; 
+  margin-right: .25em;
+  margin-left: auto;
+}
+
+.characters-thumb img {
+  display: flex;
+  width: auto;
+  height: auto;
+}
