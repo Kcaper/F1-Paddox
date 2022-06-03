@@ -39,7 +39,11 @@ def createJsonFolderStructure(pad_id, race_round, result_type):
             pass
             return "error"
 
+    print("testing git change")
+
     return cwd
+
+    
 
 def getPaddockLastCapturedRound(paddockId, prediction_type):
     
