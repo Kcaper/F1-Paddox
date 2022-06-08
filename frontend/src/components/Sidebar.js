@@ -8,6 +8,7 @@ import SubMenu from './SubMenu';
 import { IconContext } from 'react-icons/lib';
 import { GoHome } from 'react-icons/go';
 import { baseUrl } from './F1HomePage';
+import '../../static/css/sidebar.css';
 
 const Nav = styled.div`
   background: #28282B;
@@ -28,7 +29,7 @@ const Nav = styled.div`
 
 const NavIcon = styled(Link)`
   margin-left: 2rem;
-  font-size: 2rem;  
+  font-size: 2rem;
   height: 80px;
   display: flex;
   justify-content: flex-start;
@@ -78,7 +79,7 @@ function Sidebar({subnav, setSubnav, showSubnav}) {
 
   return (
       <IconContext.Provider value={{ color: '#BD2031' }}>
-        <Nav style={{width:"100%", display:"flex", flexDirection:"row", marginTop:0}}>
+        <Nav class="nav">
           <NavIcon to='#'>
             <div style={{width:"100%", display:"flex", flexDirection:"row",}}>
               <div style={{
@@ -103,7 +104,7 @@ function Sidebar({subnav, setSubnav, showSubnav}) {
                 alignItems:'center'
                 }}>
                 <FaIcons.FaUserCircle style={{marginRight: "5px", fontSize:25}}></FaIcons.FaUserCircle>
-                {username == "" 
+                {username == ""
                 ? <div style={{fontFamily:"none", marginRight:0, fontSize:18, color:"white"}} role="button" onClick={() => window.location.href = baseUrl + "/api/logout"}>
                     Login
                   </div>
