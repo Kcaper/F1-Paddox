@@ -8,7 +8,7 @@ import SubMenu from './SubMenu';
 import { IconContext } from 'react-icons/lib';
 import { GoHome } from 'react-icons/go';
 import { baseUrl } from './F1HomePage';
-import '../../static/css/sidebar.css';
+import './../../static/css/sidebar.css'
 
 const Nav = styled.div`
   background: #28282B;
