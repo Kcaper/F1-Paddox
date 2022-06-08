@@ -60,7 +60,7 @@ function F1HomePage() {
     })
   }
 
-    const getLastMidfieldPredictionDate = async () => {
+  const getLastMidfieldPredictionDate = async () => {
       await fetch(baseUrl + '/api/predictions/season/last-prediction-date/')
       .then(response => response.json())
       .then(apiPrediction => {
@@ -147,9 +147,8 @@ function F1HomePage() {
   else{
   return (
 
-    <div style={{
+    <div className='flex-column' style={{
       marginTop:100,
-      flexDirection:'column',
       display:'flex',
       alignItems:'center',
       textAlign:'left',
@@ -160,220 +159,102 @@ function F1HomePage() {
       marginRight:15,
       justifyContent:'center',
       }}>
-      <div style={{
-        display:"flex",
-        flexDirection:'column',
-        marginRight:10,
-        marginLeft:10,
-        }}>
+      <div className='display-flex flex-column ml-10 mr-10'>
         <div>
           <img src="./static/images/logo/padoxlogofull.png" />
         </div>
         {noRacelyPrediction == 0
       ? <div>
-          <div style={{
-            display:"flex",
+          <div className='display-flex font-16 bold red-text' style={{
             marginTop:16,
-            fontSize:16,
-            color:"#BD2031",
-            fontWeight:'bold',
             }}>
             <div style={{
             }}>Last sumbitted Racely Prediction</div>
           </div>
-          <div style={{
-            display:"flex",
+          <div className='display-flex' style={{
             marginBottom:16,
             }}>
-            <div style={{
-              fontStyle:"italic",
-            }}>{ lastPredictionDate } - { lastPredictionTime }</div>
+            <div className='font-italic'>{ lastPredictionDate } - { lastPredictionTime }</div>
           </div>
         </div>
       : null
         }
-        <div style={{
-          display:"flex",
-          }}>
-          <div style={{
-            fontSize:16,
-            color:"#BD2031",
-            fontWeight:'bold',
-          }}>Next Racely prediction deadline - Q1 / Sprint Race:</div>
+        <div className='display-flex'>
+          <div className='red-text font-16 bold'>Next Racely prediction deadline - Q1 / Sprint Race:</div>
         </div>
-        <div style={{
-          display:"flex",
-          }}>
-          <div style={{
-            fontStyle:"italic",
-          }}>{ time }</div>
+        <div className='display-flex'>
+          <div className='font-italic'>{ time }</div>
         </div>
-    <div style={{
-      display:"flex",
-      marginTop:'16px',
-      flexDirection:'column',
-      }}>
-      <div style={{
-        display:"grid",
+    <div className='display-flex mt-16 flex-column'>
+      <div className='display-grid flex-column' style={{
         gridTemplateColumns:"270px 30px",
-        flexDriection:"column",
         }}>
-        <div style={{
-          fontSize:12,
-          }}>
-          Racely Prediction submitted for {nextRaceName}:
-        </div>
-          {racelyPrediction == 1
-      ? <div style={{
-          fontSize:12,
-          }}>&#x2705;
-        </div>
-      : <div style={{
-          fontSize:12,
-          }}>&#10060;
-        </div>
+        <div className='font-12'>Racely Prediction submitted for {nextRaceName}:</div>
+        {racelyPrediction == 1
+          ? <div className='font-12'>&#x2705;</div>
+          : <div className='font-12'>&#10060;</div>
         }
       </div>
-    {racelyPrediction == 1
-  ? <div></div>
-  : <div style={{
-      fontSize:12,
-      color:"#BD2031",
-      }}>
-      Defaulting to your {lastRaceName} racely prediction
-    </div>
-    }
-    <div style={{
-      display:"flex",
-      flexDirection:'column',
-      }}>
-      <div style={{
-        display:"grid",
+      {racelyPrediction == 1
+        ? <div></div>
+        : <div className='font-12 red-text'>Defaulting to your {lastRaceName} racely prediction</div>
+      }
+
+    <div className='display-flex flex-column'>
+      <div className='display-grid flex-column' style={{
         gridTemplateColumns:"200px 30px",
-        flexDriection:"column",
         }}>
-        <div style={{
-          fontSize:12,
-          }}>
-          Fastest Lap For for {nextRaceName}:
-        </div>
-          {hasFastestLapPrediction == 1
-      ? <div style={{
-          fontSize:12,
-          }}>&#x2705;
-        </div>
-      : <div style={{
-          fontSize:12,
-          }}>&#10060;
-        </div>
+        <div className='font-12'>Fastest Lap For for {nextRaceName}:</div>
+        {hasFastestLapPrediction == 1
+          ? <div className='font-12'>&#x2705;</div>
+          : <div className='font-12'>&#10060;</div>
         }
       </div>
     </div>
-    <div style={{
-      display:"flex",
-      flexDirection:'column',
-      }}>
-      <div style={{
-        display:"grid",
+    <div className='display-flex flex-column'>
+      <div className='display-grid flex-column' style={{
         gridTemplateColumns:"200px 30px",
-        flexDriection:"column",
-        marginRight:"20px",
         }}>
-        <div style={{
-          fontSize:12,
-          }}>
-          Pole Lap For for {nextRaceName}:
-        </div>
-          {hasPolePrediction == 1
-      ? <div style={{
-          fontSize:12,
-          }}>&#x2705;
-        </div>
-      : <div style={{
-          fontSize:12,
-          }}>&#10060;
-        </div>
+        <div className='font-12'>Pole Lap For for {nextRaceName}:</div>
+        {hasPolePrediction == 1
+          ? <div className='font-12'>&#x2705;</div>
+          : <div className='font-12'>&#10060;</div>
         }
       </div>
     </div>
   </div>
-  <div style={{
-    color:'#BD2031',
-    fontWeight:"bold",
-    marginTop:16,
-    }}>
-    Season Predictions
-  </div>
-  <ul className="dd-list" style={{
+  <div className='bold red-text mt-16'>Season Predictions</div>
+  <ul className="dd-list mt-0 m-0" style={{
     listStyle:"none",
-    marginTop:0,
-    paddingLeft:0,
-    margin:0}}>
+    paddingLeft:0}}>
     {seasonPaddockData.map(userPaddock =>
       <li key={userPaddock.paddockName} style={{
         fontFamily: "Roboto, sans-serif",
         marginBottom:"20px",}}>
         <div>
-          <div style={{
-            display:"flex",
-            flexDirection:'column',
-            }}>
-            <div style={{
-              fontSize:14,
-              marginTop:"4px",
-              fontStyle:'italic',
-              }}>
-              {userPaddock.paddockName}
-            </div>
-            <div style={{
-              display:"flex",
-              flexDirection:'column',
-              }}>
-              <div style={{
-                display:"grid",
+          <div className='display-flex flex-column'>
+            <div className='font-italic mt-4 font-14'>{userPaddock.paddockName}</div>
+            <div className='display-flex flex-column'>
+              <div className='display-grid flex-column' style={{
                 gridTemplateColumns:"180px 30px",
-                flexDriection:"column",
                 }}>
-                <div style={{
-                  fontSize:12,
-                  }}>
-                  Constructor standing prediction:
-                </div>
-                  {userPaddock.preSeasonConstructorPrediction == 1
-              ? <div style={{
-                  fontSize:12,
-                  }}>&#x2705;
-                </div>
-              : <div style={{
-                  fontSize:12,
-                  }}>&#10060;
-                </div>
+                <div className='font-12'>Constructor standing prediction:</div>
+
+                {userPaddock.preSeasonConstructorPrediction == 1
+                ? <div className='font-12'>&#x2705;</div>
+                : <div className='font-12'>&#10060;</div>
                 }
               </div>
             </div>
-            <div style={{
-              display:"flex",
-              flexDirection:'column',
-              }}>
-              <div style={{
-                display:"grid",
+            <div className='display-flex flex-column'>
+              <div className='display-grid flex-column' style={{
                 gridTemplateColumns:"180px 30px",
-                flexDriection:"column",
                 }}>
-                <div style={{
-                  fontSize:12,
-                  }}>
-                  Driver standing prediction:
-                </div>
-                  {userPaddock.preSeasonDriverPrediction == 1
-              ? <div style={{
-                  fontSize:12,
-                  }}>&#x2705;
-                </div>
-              : <div style={{
-                  fontSize:12,
-                  }}>&#10060;
-                </div>
+                <div className='font-12'>Driver standing prediction:</div>
+
+                {userPaddock.preSeasonDriverPrediction == 1
+                ? <div className='font-12'>&#x2705;</div>
+                : <div className='font-12'>&#10060;</div>
                 }
               </div>
             </div>
