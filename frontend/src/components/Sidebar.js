@@ -8,7 +8,7 @@ import SubMenu from './SubMenu';
 import { IconContext } from 'react-icons/lib';
 import { GoHome } from 'react-icons/go';
 import { baseUrl } from './F1HomePage';
-import './../../static/css/sidebar.css'
+import styles from './../../static/css/sidebar.css'
 
 const Nav = styled.div`
   background: #28282B;
@@ -79,36 +79,22 @@ function Sidebar({subnav, setSubnav, showSubnav}) {
 
   return (
       <IconContext.Provider value={{ color: '#BD2031' }}>
-        <Nav class="nav">
+        <Nav className='nav'>
           <NavIcon to='#'>
-            <div style={{width:"100%", display:"flex", flexDirection:"row",}}>
-              <div style={{
-                marginLeft:0,
-                fontSize:20,
-                marginTop:10,
-                }}>
+            <div className='nav'>
+              <div className='burger_menu'>
                 <FaIcons.FaBars onClick={showSidebar} />
               </div>
-              <div style={{
-                marginLeft:20,
-                }}>
-                <img src="../static/images/logo/padoxlogo.png" />
+              <div className='image_container'>
+                <img src="../static/images/logo/padoxlogo.png"/>
               </div>
-              <div style={{
-                display:'flex',
-                flexDirection:'row',
-                top: 29,
-                position:"absolute",
-                right:10,
-                paddingRight:"10px",
-                alignItems:'center'
-                }}>
-                <FaIcons.FaUserCircle style={{marginRight: "5px", fontSize:25}}></FaIcons.FaUserCircle>
+              <div className='user_options_container'>
+                <FaIcons.FaUserCircle className='user_icon'></FaIcons.FaUserCircle>
                 {username == ""
-                ? <div style={{fontFamily:"none", marginRight:0, fontSize:18, color:"white"}} role="button" onClick={() => window.location.href = baseUrl + "/api/logout"}>
+                ? <div className='login_logout' role="button" onClick={() => window.location.href = baseUrl + "/api/logout"}>
                     Login
                   </div>
-                : <div style={{fontFamily:"none", marginRight:0, fontSize:18, color:"white"}} role="button" onClick={() => window.location.href = baseUrl + "/"}>
+                : <div className='login_logout' role="button" onClick={() => window.location.href = baseUrl + "/"}>
                     {username}
                   </div>}
               </div>
