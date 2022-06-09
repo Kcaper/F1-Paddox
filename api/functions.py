@@ -13,34 +13,36 @@ from dateutil import parser
 
 def createJsonFolderStructure(pad_id, race_round, result_type):
 
-    cwd = '/Users/johnpapenfus/Google Drive/John/Coding Projects/F1/f1predictions/'
-    season = str(now.year)
-    r=str(race_round)
+    try:
+        cwd = r'C:\Users\johnp\OneDrive\Documents\GitHub\F1-Paddox'
+        season = str(now.year)
+        r=str(race_round)
 
-    if result_type == "ergast":
-        try:
-            if not os.path.exists(os.path.join(cwd, 'json-files','leaderboards','paddocks',pad_id,season,r)):
-                os.makedirs(os.path.join(os.path.join(cwd, 'json-files', 'leaderboards', 'paddocks', pad_id, season, r)))
+        if result_type == "ergast":
+            try:
+                if not os.path.exists(os.path.join(cwd, 'json-files','leaderboards','paddocks',pad_id,season,r)):
+                    os.makedirs(os.path.join(os.path.join(cwd, 'json-files', 'leaderboards', 'paddocks', pad_id, season, r)))
 
-            cwd = os.path.join(os.path.join(cwd, 'json-files', 'leaderboards', 'paddocks', pad_id, season, r))
-            os.chdir(cwd)
-        except:
-            pass
-            return "error"
+                cwd = os.path.join(os.path.join(cwd, 'json-files', 'leaderboards', 'paddocks', pad_id, season, r))
+                os.chdir(cwd)
+            except:
+                pass
+                return "error"
 
-    elif result_type == "manual":
-        try:
-            if not os.path.exists(os.path.join(cwd, 'json-files','leaderboards','paddocks',pad_id,season,r, "manual")):
-                os.makedirs(os.path.join(os.path.join(cwd, 'json-files', 'leaderboards', 'paddocks', pad_id, season, r, "manual")))
+        elif result_type == "manual":
+            try:
+                if not os.path.exists(os.path.join(cwd, 'json-files','leaderboards','paddocks',pad_id,season,r, "manual")):
+                    os.makedirs(os.path.join(os.path.join(cwd, 'json-files', 'leaderboards', 'paddocks', pad_id, season, r, "manual")))
 
-            cwd = os.path.join(os.path.join(cwd, 'json-files', 'leaderboards', 'paddocks', pad_id, season, r, "manual"))
-            os.chdir(cwd)
-        except:
-            pass
-            return "error"
-
-    print("testing git change")
-
+                cwd = os.path.join(os.path.join(cwd, 'json-files', 'leaderboards', 'paddocks', pad_id, season, r, "manual"))
+                os.chdir(cwd)
+            except Exception as e:
+                print(e)
+                pass
+                return "error"
+    except Exception as e:
+        print(e)
+        
     return cwd
 
     
@@ -135,7 +137,7 @@ def getPaddockRulesStartRound(paddockId, prediction_type):
 
 def deletePaddockLeaderboardDataByRound(pad_id, race_round):
 
-    cwd = '/Users/johnpapenfus/Google Drive/John/Coding Projects/F1/f1predictions/'
+    cwd = r'C:\Users\johnp\OneDrive\Documents\GitHub\F1-Paddox'
     season = str(now.year)
     r=str(race_round)
 

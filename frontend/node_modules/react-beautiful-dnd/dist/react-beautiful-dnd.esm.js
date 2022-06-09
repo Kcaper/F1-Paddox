@@ -141,10 +141,6 @@ var ErrorBoundary = function (_React$Component) {
     }]);
   };
 
-  _proto.componentWillUnmount = function componentWillUnmount() {
-    this.unbind();
-  };
-
   _proto.componentDidCatch = function componentDidCatch(err) {
     if (err instanceof RbdInvariant) {
       if (process.env.NODE_ENV !== 'production') {
@@ -156,6 +152,10 @@ var ErrorBoundary = function (_React$Component) {
     }
 
     throw err;
+  };
+
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    this.unbind();
   };
 
   _proto.render = function render() {
@@ -3875,7 +3875,9 @@ var pendingDrop = (function (store) {
   };
 });
 
-var composeEnhancers = process.env.NODE_ENV !== 'production' && typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose;
+var composeEnhancers = process.env.NODE_ENV !== 'production' && typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+  name: 'react-beautiful-dnd'
+}) : compose;
 var createStore = (function (_ref) {
   var dimensionMarshal = _ref.dimensionMarshal,
       focusMarshal = _ref.focusMarshal,
@@ -5440,8 +5442,8 @@ function useHiddenTextElement(_ref2) {
 var AppContext = React.createContext(null);
 
 var peerDependencies = {
-	react: "^16.8.5",
-	"react-dom": "^16.8.5"
+	react: "^16.8.5 || ^17.0.0",
+	"react-dom": "^16.8.5 || ^17.0.0"
 };
 
 var semver = /(\d+)\.(\d+)\.(\d+)/;
@@ -6180,7 +6182,7 @@ function getHandleBindings(_ref2) {
   }];
 }
 
-function useMouseSensor$1(api) {
+function useTouchSensor(api) {
   var phaseRef = useRef(idle$2);
   var unbindEventsRef = useRef(noop);
   var getPhase = useCallback(function getPhase() {
@@ -6730,7 +6732,7 @@ function tryStart(_ref3) {
   return preDrag;
 }
 
-var defaultSensors = [useMouseSensor, useKeyboardSensor, useMouseSensor$1];
+var defaultSensors = [useMouseSensor, useKeyboardSensor, useTouchSensor];
 function useSensorMarshal(_ref4) {
   var contextId = _ref4.contextId,
       store = _ref4.store,
@@ -8509,4 +8511,4 @@ var ConnectedDroppable = connect(makeMapStateToProps$1, mapDispatchToProps$1, nu
 })(Droppable);
 ConnectedDroppable.defaultProps = defaultProps;
 
-export { DragDropContext, PublicDraggable as Draggable, ConnectedDroppable as Droppable, resetServerContext };
+export { DragDropContext, PublicDraggable as Draggable, ConnectedDroppable as Droppable, resetServerContext, useKeyboardSensor, useMouseSensor, useTouchSensor };

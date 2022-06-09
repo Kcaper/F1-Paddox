@@ -1342,6 +1342,12 @@ def getLeaderboardByPaddock(pid):
     last_completed_race = seasonCalendar.objects.filter(isComplete=1).latest("id").raceRound
 
     cwd = createJsonFolderStructure(pid, last_completed_race, "ergast")
+    print("")
+    print("")
+    print("")
+    print("")
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print(cwd)
 
     try:
         checkVar = jsonFileLocations.objects.filter(

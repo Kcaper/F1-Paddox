@@ -148,10 +148,6 @@ var ErrorBoundary = function (_React$Component) {
     }]);
   };
 
-  _proto.componentWillUnmount = function componentWillUnmount() {
-    this.unbind();
-  };
-
   _proto.componentDidCatch = function componentDidCatch(err) {
     if (err instanceof RbdInvariant) {
       if (process.env.NODE_ENV !== 'production') {
@@ -163,6 +159,10 @@ var ErrorBoundary = function (_React$Component) {
     }
 
     throw err;
+  };
+
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    this.unbind();
   };
 
   _proto.render = function render() {
@@ -3882,7 +3882,9 @@ var pendingDrop = (function (store) {
   };
 });
 
-var composeEnhancers = process.env.NODE_ENV !== 'production' && typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : redux.compose;
+var composeEnhancers = process.env.NODE_ENV !== 'production' && typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+  name: 'react-beautiful-dnd'
+}) : redux.compose;
 var createStore = (function (_ref) {
   var dimensionMarshal = _ref.dimensionMarshal,
       focusMarshal = _ref.focusMarshal,
@@ -5447,8 +5449,8 @@ function useHiddenTextElement(_ref2) {
 var AppContext = React__default.createContext(null);
 
 var peerDependencies = {
-	react: "^16.8.5",
-	"react-dom": "^16.8.5"
+	react: "^16.8.5 || ^17.0.0",
+	"react-dom": "^16.8.5 || ^17.0.0"
 };
 
 var semver = /(\d+)\.(\d+)\.(\d+)/;
@@ -6187,7 +6189,7 @@ function getHandleBindings(_ref2) {
   }];
 }
 
-function useMouseSensor$1(api) {
+function useTouchSensor(api) {
   var phaseRef = React.useRef(idle$2);
   var unbindEventsRef = React.useRef(noop);
   var getPhase = useMemoOne.useCallback(function getPhase() {
@@ -6737,7 +6739,7 @@ function tryStart(_ref3) {
   return preDrag;
 }
 
-var defaultSensors = [useMouseSensor, useKeyboardSensor, useMouseSensor$1];
+var defaultSensors = [useMouseSensor, useKeyboardSensor, useTouchSensor];
 function useSensorMarshal(_ref4) {
   var contextId = _ref4.contextId,
       store = _ref4.store,
@@ -8520,3 +8522,6 @@ exports.DragDropContext = DragDropContext;
 exports.Draggable = PublicDraggable;
 exports.Droppable = ConnectedDroppable;
 exports.resetServerContext = resetServerContext;
+exports.useKeyboardSensor = useKeyboardSensor;
+exports.useMouseSensor = useMouseSensor;
+exports.useTouchSensor = useTouchSensor;
