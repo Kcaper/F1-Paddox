@@ -3737,11 +3737,13 @@ def updateCombinedLeaderBoard(r, paddockId):
         driver_leaderboard_points_qset = leaderboards.objects.filter(
             seasonCalendar_id=seasonCalendarId,
             isDriverStandingsGame = 1,
+            paddock_id=paddockId,
             user_id=paddock_user_qset[u].user_id,)
 
         constructor_leaderboard_points_qset = leaderboards.objects.filter(
             seasonCalendar_id=seasonCalendarId,
             isConstructorStandingsGame = 1,
+            paddock_id=paddockId,
             user_id=paddock_user_qset[u].user_id,)
 
         if r == 0:
@@ -3876,7 +3878,7 @@ def updateAllManualPredictionPoints(paddockId):
 
 def updateAllPredictionPoints():
 
-    #clearPredictionData()
+    clearPredictionData()
 
     next_race_round = getNextRaceRound()
 
