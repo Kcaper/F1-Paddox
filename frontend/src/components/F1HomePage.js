@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import HomePage from "./HomePage";
 import { ClipLoader } from 'react-spinners';
 //export const baseUrl = 'https://8383-165-73-60-135.eu.ngrok.io'
-export const baseUrl = 'https://4f4c-165-73-60-135.eu.ngrok.io'
+export const baseUrl = 'https://ebbe-165-73-60-135.eu.ngrok.io'
 
 
 
