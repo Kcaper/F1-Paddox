@@ -1,66 +1,20 @@
-.background-dark {
-    background: #353A47;
+#logo{
 }
 
-.red-text {
-    color: #F70100;
+body{
+    background-color: #ebeff5;
 }
 
-/* Display styling */
-.display-flex {
-    display: flex;
+
+#total-orders{
+    background-color: #4cb4c7;
 }
 
-.display-grid {
-    display: grid;
+
+#orders-delivered{
+    background-color: #7abecc;
 }
 
-.flex-column {
-    flex-direction: column;
-}
-
-/* Font styling */
-.font-12 {
-    font-size: 12px;
-}
-
-.font-14 {
-    font-size: 14px;
-}
-
-.font-16 {
-    font-size: 16px;
-}
-
-.bold {
-    font-weight: bold;
-}
-
-.font-italic {
-    font-style: italic;
-}
-
-/* Spacing elements */
-.m-0 {
-    margin: 0;
-}
-
-.mt-0 {
-    margin-top: 0;
-}
-
-.mt-4 {
-    margin-top: 4px;;
-}
-
-.ml-10 {
-    margin-left: 10px;
-}
-
-.mr-10 {
-    margin-right: 10px;
-}
-
-.mt-16 {
-    margin-top: 16px;
+#orders-pending{
+    background-color: #7CD1C0;
 }

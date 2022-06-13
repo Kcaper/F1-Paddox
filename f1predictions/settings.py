@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    '950a-165-73-60-135.eu.ngrok.io'
+    '8383-165-73-60-135.eu.ngrok.io'
 ]
 # Application definition
 
@@ -63,11 +63,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
-
-CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:3000',
-    'http://localhost:3000'
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
@@ -148,3 +144,4 @@ USE_TZ = True
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 STATIC_URL = '/static/'
+

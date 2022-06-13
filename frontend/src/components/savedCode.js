@@ -77,7 +77,7 @@ function F1HomePage() {
     .then(deadline => {
       let countDownString = deadline.fp1Date + " " + deadline.fp1StartTime
       let CountDownDate = new Date(countDownString.replace(/-/g, '/')).getTime();
-
+      
       let x = setInterval(function () {
         let nowString = new Date().toString();
         let now = new Date(nowString.replace(/-/g, '/')).getTime();
@@ -104,7 +104,7 @@ function F1HomePage() {
     .then(deadline => {
       let countDownString = deadline.qualiDate + " " + deadline.qualiStartTime
       let CountDownDate = new Date(countDownString.replace(/-/g, '/')).getTime();
-
+      
       let x = setInterval(function () {
         let nowString = new Date().toString();
         let now = new Date(nowString.replace(/-/g, '/')).getTime();
@@ -266,7 +266,7 @@ function F1HomePage() {
     marginTop:0,
     paddingLeft:0,
     margin:0}}>
-    {seasonPaddockData.map(userPaddock =>
+    {seasonPaddockData.map(userPaddock => 
       <li key={userPaddock.paddockName} style={{fontFamily: "Roboto, sans-serif",}}>
         <div style={{
           display:"flex",
@@ -299,7 +299,7 @@ function F1HomePage() {
     marginTop:0,
     paddingLeft:0,
     margin:0}}>
-    {seasonPaddockData.map(userPaddock =>
+    {seasonPaddockData.map(userPaddock => 
       <li key={userPaddock.id} style={{fontFamily: "Roboto, sans-serif",}}>
         <div style={{
           display:"flex",
@@ -330,3 +330,4 @@ function F1HomePage() {
   }
 };
 export default F1HomePage;
+
