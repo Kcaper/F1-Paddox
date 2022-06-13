@@ -8,27 +8,14 @@ import SubMenu from './SubMenu';
 import { IconContext } from 'react-icons/lib';
 import { GoHome } from 'react-icons/go';
 import { baseUrl } from './F1HomePage';
+import './../../static/css/main.css';
+import  './../../static/css/sidebar.css';
 
-const Nav = styled.div`
-  background: #28282B;
-  height: 80px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  position: fixed;
-  margin-top:0;
-  width:100%;
-  margin-top:0px;
-  margin-left:0px;
-  z-index:99;
-  font-size:0rem;
-  top:0;
-  color:white;
-`;
+const Nav = styled.div``;
 
 const NavIcon = styled(Link)`
   margin-left: 2rem;
-  font-size: 2rem;  
+  font-size: 2rem;
   height: 80px;
   display: flex;
   justify-content: flex-start;
@@ -36,7 +23,6 @@ const NavIcon = styled(Link)`
 `;
 
 const SidebarNav = styled.nav`
-  background: #28282B;
   width: 250px;
   height: 100vh;
   display: flex;
@@ -77,44 +63,30 @@ function Sidebar({subnav, setSubnav, showSubnav}) {
   }
 
   return (
-      <IconContext.Provider value={{ color: '#BD2031' }}>
-        <Nav style={{width:"100%", display:"flex", flexDirection:"row", marginTop:0}}>
+      <IconContext.Provider value={{ color: '#F70100' }}>
+        <Nav className='nav background-dark'>
           <NavIcon to='#'>
-            <div style={{width:"100%", display:"flex", flexDirection:"row",}}>
-              <div style={{
-                marginLeft:0,
-                fontSize:20,
-                marginTop:10,
-                }}>
+            <div className='nav-two'>
+              <div className='burger-menu'>
                 <FaIcons.FaBars onClick={showSidebar} />
               </div>
-              <div style={{
-                marginLeft:20,
-                }}>
-                <img src="../static/images/logo/padoxlogo.png" />
+              <div className='image-container'>
+                <img src="../static/images/logo/padoxlogo.png"/>
               </div>
-              <div style={{
-                display:'flex',
-                flexDirection:'row',
-                top: 29,
-                position:"absolute",
-                right:10,
-                paddingRight:"10px",
-                alignItems:'center'
-                }}>
-                <FaIcons.FaUserCircle style={{marginRight: "5px", fontSize:25}}></FaIcons.FaUserCircle>
-                {username == "" 
-                ? <div style={{fontFamily:"none", marginRight:0, fontSize:18, color:"white"}} role="button" onClick={() => window.location.href = baseUrl + "/api/logout"}>
+              <div className='user-options-container'>
+                <FaIcons.FaUserCircle className='user-icon'></FaIcons.FaUserCircle>
+                {username == ""
+                ? <div className='login-logout' role="button" onClick={() => window.location.href = baseUrl + "/api/logout"}>
                     Login
                   </div>
-                : <div style={{fontFamily:"none", marginRight:0, fontSize:18, color:"white"}} role="button" onClick={() => window.location.href = baseUrl + "/"}>
+                : <div className='login-logout' role="button" onClick={() => window.location.href = baseUrl + "/"}>
                     {username}
                   </div>}
               </div>
             </div>
           </NavIcon>
         </Nav>
-        <SidebarNav sidebar={sidebar} >
+        <SidebarNav sidebar={sidebar} className='background-dark'>
           <SidebarWrap>
             <NavIcon to='#'>
               <AiIcons.AiOutlineClose onClick={showSidebar} />

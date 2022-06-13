@@ -1,0 +1,88 @@
+.nav {
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 0;
+    height: 80px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: fixed;
+    margin-top:0;
+    width:100%;
+    margin-top:0px;
+    margin-left:0px;
+    z-index:99;
+    font-size:0rem;
+    top:0;
+    color:white;
+}
+
+.nav-two {
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 0;
+}
+
+.sidebar-nav {
+    background: #28282B;
+    width: 250px;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    transition: 350ms;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    z-index: 10;
+}
+
+.login-logout {
+    font-family: none;
+    margin-right: 0;
+    font-size: 18px;
+    color: white;
+}
+
+.user-icon {
+    margin-right: 5px;
+    font-size: 25;
+}
+
+.user-options-container {
+    display: flex;
+    flex-direction: row;
+    top: 29px;
+    position: absolute;
+    right:10px;
+    padding-right:10px;
+    align-items:center;
+}
+
+.burger-menu {
+    margin-left:0;
+    font-size: 20px;
+    margin-top: 5px;
+}
+
+.image-container {
+    margin-left: 20px;
+}
+
+.highlight-color {
+    color: #BD2031;
+}
+
+.sidename {
+background: pink;
+  width: 250px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  transition: 350ms;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  z-index: 10;
+}
