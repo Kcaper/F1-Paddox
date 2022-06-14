@@ -14,7 +14,8 @@ from dateutil import parser
 def createJsonFolderStructure(pad_id, race_round, result_type):
 
     try:
-        cwd = r'C:\Users\johnp\OneDrive\Documents\GitHub\F1-Paddox'
+        cwd = os.getcwd() #r'C:\Users\johnp\OneDrive\Documents\GitHub\F1-Paddox'
+        root_dir = cwd
         season = str(now.year)
         r=str(race_round)
 
@@ -43,7 +44,7 @@ def createJsonFolderStructure(pad_id, race_round, result_type):
     except Exception as e:
         print(e)
         
-    return cwd
+    return cwd, root_dir
 
     
 
@@ -137,7 +138,8 @@ def getPaddockRulesStartRound(paddockId, prediction_type):
 
 def deletePaddockLeaderboardDataByRound(pad_id, race_round):
 
-    cwd = r'C:\Users\johnp\OneDrive\Documents\GitHub\F1-Paddox'
+    cwd = os.getcwd()#r'C:\Users\johnp\OneDrive\Documents\GitHub\F1-Paddox'
+    root_dir = cwd
     season = str(now.year)
     r=str(race_round)
 
@@ -147,7 +149,7 @@ def deletePaddockLeaderboardDataByRound(pad_id, race_round):
     cwd = os.path.join(os.path.join(cwd, 'json-files', 'leaderboards', 'paddocks', pad_id, season, r))
     shutil.rmtree(cwd)
 
-    return cwd
+    return cwd, root_dir
 
 def getNextRaceRound():
     
@@ -4370,7 +4372,7 @@ def updateRacelyManualPredictionPoints(race_round, paddockId):
 
         last_completed_race = seasonCalendar.objects.filter(isComplete=1).latest("id").raceRound
 
-        cwd = createJsonFolderStructure(paddockId, last_completed_race, "manual")
+        cwd, root_dir = createJsonFolderStructure(paddockId, last_completed_race, "manual")
 
         try:
             shutil.rmtree(cwd)
@@ -4378,6 +4380,7 @@ def updateRacelyManualPredictionPoints(race_round, paddockId):
             print ("Error: %s - %s." % (e.filename, e.strerror))
 
         #####Pole and Fastest lap prediction Points
+        os.chdir(root_dir)
         
         user_fast_lap_driver_id = 1
         user_pole_lap_driver_id = 1

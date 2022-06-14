@@ -1333,7 +1333,7 @@ def userPaddocksSerializer(uid):
     return json_data
 
 def getLeaderboardByPaddock(pid):
-
+    
     now = datetime.now()
     file_found = False
 
@@ -1341,243 +1341,259 @@ def getLeaderboardByPaddock(pid):
 
     last_completed_race = seasonCalendar.objects.filter(isComplete=1).latest("id").raceRound
 
-    cwd = createJsonFolderStructure(pid, last_completed_race, "ergast")
-    print("")
-    print("")
-    print("")
-    print("")
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    print(cwd)
-
+    cwd, root_dir = createJsonFolderStructure(pid, last_completed_race, "ergast")
+    
     try:
-        checkVar = jsonFileLocations.objects.filter(
-            year=now.year,
-            isGeneralLeaderboard=1,
-            paddock_id = pid,
-            seasonCalendar_id = seasonCalendar.objects.filter(
+        try:
+            checkVar = jsonFileLocations.objects.filter(
                 year=now.year,
-                raceRound=last_completed_race,
-            ).latest("id").id
-        ).latest("id").fileLocation
-        print("leaderbaord json record found")
+                isGeneralLeaderboard=1,
+                paddock_id = pid,
+                seasonCalendar_id = seasonCalendar.objects.filter(
+                    year=now.year,
+                    raceRound=last_completed_race,
+                ).latest("id").id
+            ).latest("id").fileLocation
+            print("leaderbaord json record found")
 
-        if os.path.exists(checkVar):
-            file_found = True
-            print("leaderboard json file found")
-        else:
-            print("No Leaderboard Json file found, creating a new one")
-    except:
-        print("creating new leaderboard json file")
-
-    if file_found == False:
-
-        paddock_user_dict = {}
-        paddock_user_dict['circuitRefs'] = []
-        paddock_user_dict['paddockUsers'] = []
-        paddock_user_dict['isManualResult'] = 0
-        paddock_user_dict['manualResultSubmitter'] = ""
-        paddock_user_dict['racelyRuleSetName'] = paddocks.objects.get(id=pid).paddockRules.ruleSetName
-        paddock_user_dict['paddockId'] = pid
-        paddock_user_dict['paddockName'] = paddocks.objects.get(id=pid).paddockName
-        paddock_user_dict['paddockRacelyStartRound'] = getPaddockRulesStartRound(pid, "racely")
-        paddock_user_dict['raceRound'] = {}
-        paddock_user_dict['thisRound'] = seasonCalendar.objects.get(year=now.year, raceRound = last_completed_race).circuit.circuitRef
-        paddock_user_dict['lastRound'] = seasonCalendar.objects.get(year=now.year, raceRound = last_completed_race).circuit.circuitRef
-        leaderboard_qset = leaderboards.objects.filter(paddock_id=pid, isActive=1)
-
-        paddock_user_qset = userPaddocks.objects.filter(paddock_id=pid)
-        for i in range(0, paddock_user_qset.count(), 1):
-            try:
-                paddock_user_dict['paddockUsers'].append(paddock_user_qset[i].user.username)
-            except:
-                continue
-
-        paddock_user_dict['currentRound'] = next_race_round-1
-        race_start_round = getPaddockRulesStartRound(pid, 'racely')
-
-        for r in range(race_start_round, next_race_round, 1):
-
-            midfield_season_ordered_leaderboard_qset = leaderboard_qset.filter(seasonCalendar_id=seasonCalendar.objects.filter(year=now.year, raceRound=r)[0].id, isMidfieldGame=1).order_by('currentOverallPosition')
-            midfield_round_ordered_leaderboard_qset = leaderboard_qset.filter(seasonCalendar_id=seasonCalendar.objects.filter(year=now.year, raceRound=r)[0].id, isMidfieldGame=1).order_by('roundPlayerPosition')
-
-            driver_standing_ordered_leaderboard_qset = leaderboard_qset.filter(seasonCalendar_id=seasonCalendar.objects.filter(year=now.year, raceRound=r)[0].id, isDriverStandingsGame=1).order_by('currentOverallPosition')
-            constructor_standing_ordered_leaderboard_qset = leaderboard_qset.filter(seasonCalendar_id=seasonCalendar.objects.filter(year=now.year, raceRound=r)[0].id, isConstructorStandingsGame=1).order_by('currentOverallPosition')
-
-            if r == next_race_round-1:
-                r = "current"
-                race_round=next_race_round-1
+            if os.path.exists(checkVar):
+                file_found = True
+                print("leaderboard json file found")
             else:
-                race_round=r
-            
-            paddock_user_dict['raceRound'][r] = {}
-            paddock_user_dict['raceRound'][r]['midfieldRound'] = {}
-            paddock_user_dict['raceRound'][r]['midfieldOverall'] = {}
-            paddock_user_dict['raceRound'][r]['driverStandings'] = {}
-            paddock_user_dict['raceRound'][r]['constructorStandings'] = {}
-            paddock_user_dict['raceRound'][r]['combined'] = {}
+                print("No Leaderboard Json file found, creating a new one")
+        except:
+            print("creating new leaderboard json file")
 
-            paddock_user_dict['circuitRefs'].append(seasonCalendar.objects.filter(year=now.year, raceRound=race_round)[0].circuit.circuitRef)
-            
-            first = True
-            position_text = "1."
-            paddock_user_dict['raceRound'][r]['midfieldOverall'][seasonCalendar.objects.filter(year=now.year, raceRound=race_round)[0].circuit.circuitRef] = []
-            save_pos = 1
-            pos_jump = 0
-            for p in range(0, midfield_season_ordered_leaderboard_qset.count(), 1):
+        if file_found == False:
 
-                if p > 0:
-                    if midfield_season_ordered_leaderboard_qset[p].currentTotalPoints == midfield_season_ordered_leaderboard_qset[p-1].currentTotalPoints:
-                        if first == True:
-                            save_pos = save_pos + pos_jump
-                            pos_jump = 1
-                            position_text = str(midfield_season_ordered_leaderboard_qset[p].currentOverallPosition) + "."
-                            first = False
-                        else:
-                            position_text = ""
-                            pos_jump = pos_jump + 1
-                    else:
-                        first = False
-                        position_text = str(midfield_season_ordered_leaderboard_qset[p].currentOverallPosition) + "."
-                        save_pos = save_pos + pos_jump
-                        pos_jump = 1
-                else:
-                    pos_jump = pos_jump + 1
-                    first = False
+            paddock_user_dict = {}
+            paddock_user_dict['circuitRefs'] = []
+            paddock_user_dict['paddockUsers'] = []
+            paddock_user_dict['isManualResult'] = 0
+            paddock_user_dict['manualResultSubmitter'] = ""
+            paddock_user_dict['racelyRuleSetName'] = paddocks.objects.get(id=pid).paddockRules.ruleSetName
+            paddock_user_dict['paddockId'] = pid
+            paddock_user_dict['paddockName'] = paddocks.objects.get(id=pid).paddockName
+            paddock_user_dict['paddockRacelyStartRound'] = getPaddockRulesStartRound(pid, "racely")
+            paddock_user_dict['raceRound'] = {}
+            paddock_user_dict['thisRound'] = seasonCalendar.objects.get(year=now.year, raceRound = last_completed_race).circuit.circuitRef
+            paddock_user_dict['lastRound'] = seasonCalendar.objects.get(year=now.year, raceRound = last_completed_race).circuit.circuitRef
+            leaderboard_qset = leaderboards.objects.filter(paddock_id=pid, isActive=1)
 
-                if midfield_season_ordered_leaderboard_qset[p].paddockDelta > 0:
-                    paddock_delta_text = "^ " + str(midfield_season_ordered_leaderboard_qset[p].paddockDelta)
-                elif midfield_season_ordered_leaderboard_qset[p].paddockDelta < 0:
-                    paddock_delta_text = "v " + str(midfield_season_ordered_leaderboard_qset[p].paddockDelta*-1)
-                else:
-                    paddock_delta_text = "~"
-
-                paddock_user_dict['raceRound'][r]['midfieldOverall'][midfield_season_ordered_leaderboard_qset[p].seasonCalendar.circuit.circuitRef].append({
-                    'user_id' : midfield_season_ordered_leaderboard_qset[p].user_id,
-                    'username' : midfield_season_ordered_leaderboard_qset[p].user.username,
-                    'position' : save_pos,
-                    'positionText' : position_text,
-                    'currentTotalPoints' : midfield_season_ordered_leaderboard_qset[p].currentTotalPoints,
-                    'paddockDelta': midfield_season_ordered_leaderboard_qset[p].paddockDelta,
-                    'paddockDeltaText': paddock_delta_text,
-                    'round' : r
-                })
-            
-            try:
-                top_midfield_round_points = midfield_round_ordered_leaderboard_qset[0].roundPoints
-            except:
-                pass
-            paddock_user_dict['raceRound'][r]['midfieldRound'][seasonCalendar.objects.filter(year=now.year, raceRound=race_round)[0].circuit.circuitRef] = []
-            first = True
-            position_text = "1."
-            for p in range(0, midfield_round_ordered_leaderboard_qset.count(), 1):
-
-                userId = midfield_round_ordered_leaderboard_qset[p].user_id
-                season_calendarId = seasonCalendar.objects.get(year=now.year, raceRound = race_round).id
-                if p > 0:
-
-                    if midfield_round_ordered_leaderboard_qset[p].roundPoints == midfield_round_ordered_leaderboard_qset[p-1].roundPoints:
-                        if first == True:
-                            position_text = str(midfield_round_ordered_leaderboard_qset[p].roundPlayerPosition) + "."
-                            first = False
-                        else:
-                            position_text = ""
-                    else:
-                        first = False
-                        position_text = str(midfield_round_ordered_leaderboard_qset[p].roundPlayerPosition) + "."
-
-                if midfield_round_ordered_leaderboard_qset[p].roundPoints == top_midfield_round_points:
-                    round_winner = 1
-                else:
-                    round_winner = 0
-
-                fastest_lap_bonus_point = 0
-                pole_lap_bonusPoint = 0
-
+            paddock_user_qset = userPaddocks.objects.filter(paddock_id=pid)
+            for i in range(0, paddock_user_qset.count(), 1):
                 try:
-                    if predictionPoints.objects.get(
-                        user_id = userId,
-                        seasonCalendar_id = season_calendarId,
-                        isPoleSitterPoint = 1,
-                    ).pointsForPrediction > 0:
-                        pole_lap_bonusPoint = 1
-                except Exception as e:
-                    pass
-                
-                try:
-                    if predictionPoints.objects.get(
-                        user_id = userId,
-                        seasonCalendar_id = season_calendarId,
-                        isFastestLapPoint = 1,
-                    ).pointsForPrediction > 0:
-                        fastest_lap_bonus_point = 1
-                except Exception as e:
-                    pass
-                        
-                paddock_user_dict['raceRound'][r]['midfieldRound'][midfield_round_ordered_leaderboard_qset[p].seasonCalendar.circuit.circuitRef].append({
-                    'user_id' : midfield_round_ordered_leaderboard_qset[p].user_id,
-                    'username' : midfield_round_ordered_leaderboard_qset[p].user.username,
-                    'position' : midfield_round_ordered_leaderboard_qset[p].roundPlayerPosition,
-                    'positionText' : position_text,
-                    'roundPoints' : midfield_round_ordered_leaderboard_qset[p].roundPoints,
-                    'paddockDelta' : midfield_round_ordered_leaderboard_qset[p].paddockDelta,
-                    'roundWinner' : round_winner,
-                    'round' : r,
-                    "gotFastLapBonusPoint" : fastest_lap_bonus_point,
-                    "gotPoleLapBonusPoints" : pole_lap_bonusPoint,
-                })
+                    paddock_user_dict['paddockUsers'].append(paddock_user_qset[i].user.username)
+                except:
+                    continue
 
-            paddock_user_dict['raceRound'][r]['driverStandings'][seasonCalendar.objects.filter(year=now.year, raceRound=race_round)[0].circuit.circuitRef] = []
-            for p in range(0, driver_standing_ordered_leaderboard_qset.count(), 1):
-                paddock_user_dict['raceRound'][r]['driverStandings'][driver_standing_ordered_leaderboard_qset[p].seasonCalendar.circuit.circuitRef].append({
-                    'user_id' : driver_standing_ordered_leaderboard_qset[p].user_id,
-                    'username' : driver_standing_ordered_leaderboard_qset[p].user.username,
-                    'position' : driver_standing_ordered_leaderboard_qset[p].currentOverallPosition,
-                    'currentTotalPoints' : driver_standing_ordered_leaderboard_qset[p].currentTotalPoints,
-                    'paddockDelta' : driver_standing_ordered_leaderboard_qset[p].paddockDelta,
-                    'round' : r,
-                })
-                
-            paddock_user_dict['raceRound'][r]['constructorStandings'][seasonCalendar.objects.filter(year=now.year, raceRound=race_round)[0].circuit.circuitRef] = []
-            for p in range(0, constructor_standing_ordered_leaderboard_qset.count(), 1):
-                paddock_user_dict['raceRound'][r]['constructorStandings'][constructor_standing_ordered_leaderboard_qset[p].seasonCalendar.circuit.circuitRef].append({
-                    'user_id' : constructor_standing_ordered_leaderboard_qset[p].user_id,
-                    'username' : constructor_standing_ordered_leaderboard_qset[p].user.username,
-                    'position' : constructor_standing_ordered_leaderboard_qset[p].currentOverallPosition,
-                    'currentTotalPoints' : constructor_standing_ordered_leaderboard_qset[p].currentTotalPoints,
-                    'paddockDelta' : constructor_standing_ordered_leaderboard_qset[p].paddockDelta,
-                    'round' : r,
-                })
-        paddock_user_dict['midRoundPointsByUser'] = {}
-        for u in range(0, len(paddock_user_dict['paddockUsers']), 1):
-            paddock_user_dict['midRoundPointsByUser'][paddock_user_dict['paddockUsers'][u]] = []
+            paddock_user_dict['currentRound'] = next_race_round-1
+            race_start_round = getPaddockRulesStartRound(pid, 'racely')
+
             for r in range(race_start_round, next_race_round, 1):
 
-                userId = User.objects.get(username = paddock_user_dict['paddockUsers'][u]).id
-                season_calendarId = seasonCalendar.objects.get(year=now.year, raceRound = r - 1 + race_start_round).id
+                midfield_season_ordered_leaderboard_qset = leaderboard_qset.filter(seasonCalendar_id=seasonCalendar.objects.filter(year=now.year, raceRound=r)[0].id, isMidfieldGame=1).order_by('currentOverallPosition')
+                midfield_round_ordered_leaderboard_qset = leaderboard_qset.filter(seasonCalendar_id=seasonCalendar.objects.filter(year=now.year, raceRound=r)[0].id, isMidfieldGame=1).order_by('roundPlayerPosition')
 
-                fastest_lap_bonus_point = 0
-                pole_lap_bonusPoint = 0
+                driver_standing_ordered_leaderboard_qset = leaderboard_qset.filter(seasonCalendar_id=seasonCalendar.objects.filter(year=now.year, raceRound=r)[0].id, isDriverStandingsGame=1).order_by('currentOverallPosition')
+                constructor_standing_ordered_leaderboard_qset = leaderboard_qset.filter(seasonCalendar_id=seasonCalendar.objects.filter(year=now.year, raceRound=r)[0].id, isConstructorStandingsGame=1).order_by('currentOverallPosition')
 
-                try:
-                    if predictionPoints.objects.get(
-                        user_id = userId,
-                        seasonCalendar_id = season_calendarId,
-                        isPoleSitterPoint = 1,
-                    ).pointsForPrediction > 0:
-                        pole_lap_bonusPoint = 1
-                except Exception as e:
-                    pass
+                if r == next_race_round-1:
+                    r = "current"
+                    race_round=next_race_round-1
+                else:
+                    race_round=r
+                
+                paddock_user_dict['raceRound'][r] = {}
+                paddock_user_dict['raceRound'][r]['midfieldRound'] = {}
+                paddock_user_dict['raceRound'][r]['midfieldOverall'] = {}
+                paddock_user_dict['raceRound'][r]['driverStandings'] = {}
+                paddock_user_dict['raceRound'][r]['constructorStandings'] = {}
+                paddock_user_dict['raceRound'][r]['combined'] = {}
+
+                paddock_user_dict['circuitRefs'].append(seasonCalendar.objects.filter(year=now.year, raceRound=race_round)[0].circuit.circuitRef)
+                
+                first = True
+                position_text = "1."
+                paddock_user_dict['raceRound'][r]['midfieldOverall'][seasonCalendar.objects.filter(year=now.year, raceRound=race_round)[0].circuit.circuitRef] = []
+                save_pos = 1
+                pos_jump = 0
+                for p in range(0, midfield_season_ordered_leaderboard_qset.count(), 1):
+
+                    if p > 0:
+                        if midfield_season_ordered_leaderboard_qset[p].currentTotalPoints == midfield_season_ordered_leaderboard_qset[p-1].currentTotalPoints:
+                            if first == True:
+                                save_pos = save_pos + pos_jump
+                                pos_jump = 1
+                                position_text = str(midfield_season_ordered_leaderboard_qset[p].currentOverallPosition) + "."
+                                first = False
+                            else:
+                                position_text = ""
+                                pos_jump = pos_jump + 1
+                        else:
+                            first = False
+                            position_text = str(midfield_season_ordered_leaderboard_qset[p].currentOverallPosition) + "."
+                            save_pos = save_pos + pos_jump
+                            pos_jump = 1
+                    else:
+                        pos_jump = pos_jump + 1
+                        first = False
+
+                    if midfield_season_ordered_leaderboard_qset[p].paddockDelta > 0:
+                        paddock_delta_text = "^ " + str(midfield_season_ordered_leaderboard_qset[p].paddockDelta)
+                    elif midfield_season_ordered_leaderboard_qset[p].paddockDelta < 0:
+                        paddock_delta_text = "v " + str(midfield_season_ordered_leaderboard_qset[p].paddockDelta*-1)
+                    else:
+                        paddock_delta_text = "~"
+
+                    paddock_user_dict['raceRound'][r]['midfieldOverall'][midfield_season_ordered_leaderboard_qset[p].seasonCalendar.circuit.circuitRef].append({
+                        'user_id' : midfield_season_ordered_leaderboard_qset[p].user_id,
+                        'username' : midfield_season_ordered_leaderboard_qset[p].user.username,
+                        'position' : save_pos,
+                        'positionText' : position_text,
+                        'currentTotalPoints' : midfield_season_ordered_leaderboard_qset[p].currentTotalPoints,
+                        'paddockDelta': midfield_season_ordered_leaderboard_qset[p].paddockDelta,
+                        'paddockDeltaText': paddock_delta_text,
+                        'round' : r
+                    })
                 
                 try:
-                    if predictionPoints.objects.get(
-                        user_id = userId,
-                        seasonCalendar_id = season_calendarId,
-                        isFastestLapPoint = 1,
-                    ).pointsForPrediction > 0:
-                        fastest_lap_bonus_point = 1
-                except Exception as e:
+                    top_midfield_round_points = midfield_round_ordered_leaderboard_qset[0].roundPoints
+                except:
                     pass
+                paddock_user_dict['raceRound'][r]['midfieldRound'][seasonCalendar.objects.filter(year=now.year, raceRound=race_round)[0].circuit.circuitRef] = []
+                first = True
+                position_text = "1."
+                for p in range(0, midfield_round_ordered_leaderboard_qset.count(), 1):
 
+                    userId = midfield_round_ordered_leaderboard_qset[p].user_id
+                    season_calendarId = seasonCalendar.objects.get(year=now.year, raceRound = race_round).id
+                    if p > 0:
+
+                        if midfield_round_ordered_leaderboard_qset[p].roundPoints == midfield_round_ordered_leaderboard_qset[p-1].roundPoints:
+                            if first == True:
+                                position_text = str(midfield_round_ordered_leaderboard_qset[p].roundPlayerPosition) + "."
+                                first = False
+                            else:
+                                position_text = ""
+                        else:
+                            first = False
+                            position_text = str(midfield_round_ordered_leaderboard_qset[p].roundPlayerPosition) + "."
+
+                    if midfield_round_ordered_leaderboard_qset[p].roundPoints == top_midfield_round_points:
+                        round_winner = 1
+                    else:
+                        round_winner = 0
+
+                    fastest_lap_bonus_point = 0
+                    pole_lap_bonusPoint = 0
+
+                    try:
+                        if predictionPoints.objects.get(
+                            user_id = userId,
+                            seasonCalendar_id = season_calendarId,
+                            isPoleSitterPoint = 1,
+                        ).pointsForPrediction > 0:
+                            pole_lap_bonusPoint = 1
+                    except Exception as e:
+                        pass
+                    
+                    try:
+                        if predictionPoints.objects.get(
+                            user_id = userId,
+                            seasonCalendar_id = season_calendarId,
+                            isFastestLapPoint = 1,
+                        ).pointsForPrediction > 0:
+                            fastest_lap_bonus_point = 1
+                    except Exception as e:
+                        pass
+                            
+                    paddock_user_dict['raceRound'][r]['midfieldRound'][midfield_round_ordered_leaderboard_qset[p].seasonCalendar.circuit.circuitRef].append({
+                        'user_id' : midfield_round_ordered_leaderboard_qset[p].user_id,
+                        'username' : midfield_round_ordered_leaderboard_qset[p].user.username,
+                        'position' : midfield_round_ordered_leaderboard_qset[p].roundPlayerPosition,
+                        'positionText' : position_text,
+                        'roundPoints' : midfield_round_ordered_leaderboard_qset[p].roundPoints,
+                        'paddockDelta' : midfield_round_ordered_leaderboard_qset[p].paddockDelta,
+                        'roundWinner' : round_winner,
+                        'round' : r,
+                        "gotFastLapBonusPoint" : fastest_lap_bonus_point,
+                        "gotPoleLapBonusPoints" : pole_lap_bonusPoint,
+                    })
+
+                paddock_user_dict['raceRound'][r]['driverStandings'][seasonCalendar.objects.filter(year=now.year, raceRound=race_round)[0].circuit.circuitRef] = []
+                for p in range(0, driver_standing_ordered_leaderboard_qset.count(), 1):
+                    paddock_user_dict['raceRound'][r]['driverStandings'][driver_standing_ordered_leaderboard_qset[p].seasonCalendar.circuit.circuitRef].append({
+                        'user_id' : driver_standing_ordered_leaderboard_qset[p].user_id,
+                        'username' : driver_standing_ordered_leaderboard_qset[p].user.username,
+                        'position' : driver_standing_ordered_leaderboard_qset[p].currentOverallPosition,
+                        'currentTotalPoints' : driver_standing_ordered_leaderboard_qset[p].currentTotalPoints,
+                        'paddockDelta' : driver_standing_ordered_leaderboard_qset[p].paddockDelta,
+                        'round' : r,
+                    })
+                    
+                paddock_user_dict['raceRound'][r]['constructorStandings'][seasonCalendar.objects.filter(year=now.year, raceRound=race_round)[0].circuit.circuitRef] = []
+                for p in range(0, constructor_standing_ordered_leaderboard_qset.count(), 1):
+                    paddock_user_dict['raceRound'][r]['constructorStandings'][constructor_standing_ordered_leaderboard_qset[p].seasonCalendar.circuit.circuitRef].append({
+                        'user_id' : constructor_standing_ordered_leaderboard_qset[p].user_id,
+                        'username' : constructor_standing_ordered_leaderboard_qset[p].user.username,
+                        'position' : constructor_standing_ordered_leaderboard_qset[p].currentOverallPosition,
+                        'currentTotalPoints' : constructor_standing_ordered_leaderboard_qset[p].currentTotalPoints,
+                        'paddockDelta' : constructor_standing_ordered_leaderboard_qset[p].paddockDelta,
+                        'round' : r,
+                    })
+            paddock_user_dict['midRoundPointsByUser'] = {}
+            for u in range(0, len(paddock_user_dict['paddockUsers']), 1):
+                paddock_user_dict['midRoundPointsByUser'][paddock_user_dict['paddockUsers'][u]] = []
+                for r in range(race_start_round, next_race_round, 1):
+
+                    userId = User.objects.get(username = paddock_user_dict['paddockUsers'][u]).id
+                    season_calendarId = seasonCalendar.objects.get(year=now.year, raceRound = r - 1 + race_start_round).id
+
+                    fastest_lap_bonus_point = 0
+                    pole_lap_bonusPoint = 0
+
+                    try:
+                        if predictionPoints.objects.get(
+                            user_id = userId,
+                            seasonCalendar_id = season_calendarId,
+                            isPoleSitterPoint = 1,
+                        ).pointsForPrediction > 0:
+                            pole_lap_bonusPoint = 1
+                    except Exception as e:
+                        pass
+                    
+                    try:
+                        if predictionPoints.objects.get(
+                            user_id = userId,
+                            seasonCalendar_id = season_calendarId,
+                            isFastestLapPoint = 1,
+                        ).pointsForPrediction > 0:
+                            fastest_lap_bonus_point = 1
+                    except Exception as e:
+                        pass
+
+                    try:
+                        round_points = leaderboards.objects.filter(
+                            paddock_id=pid,
+                            isActive=1,
+                            user_id=User.objects.filter(
+                                username=paddock_user_dict['paddockUsers'][u])[0].id,
+                            seasonCalendar_id=seasonCalendar.objects.filter(
+                                year=now.year,
+                                raceRound=r)[0].id,
+                            isMidfieldGame=1)[0].roundPoints
+                    except:
+                        round_points = 0
+
+                    paddock_user_dict['midRoundPointsByUser'][paddock_user_dict['paddockUsers'][u]].append({
+                        'id':u+1,
+                        'circuitRef':seasonCalendar.objects.filter(year=now.year, raceRound=r)[0].circuit.circuitRef,
+                        'username':paddock_user_dict['paddockUsers'][u],
+                        'roundPoints':round_points,
+                        'gotFastestLapBonusPoint' : fastest_lap_bonus_point,
+                        'gotPoleLapBonusPoint' : pole_lap_bonusPoint,
+                    })
                 try:
                     round_points = leaderboards.objects.filter(
                         paddock_id=pid,
@@ -1591,55 +1607,37 @@ def getLeaderboardByPaddock(pid):
                 except:
                     round_points = 0
 
-                paddock_user_dict['midRoundPointsByUser'][paddock_user_dict['paddockUsers'][u]].append({
-                    'id':u+1,
-                    'circuitRef':seasonCalendar.objects.filter(year=now.year, raceRound=r)[0].circuit.circuitRef,
-                    'username':paddock_user_dict['paddockUsers'][u],
-                    'roundPoints':round_points,
-                    'gotFastestLapBonusPoint' : fastest_lap_bonus_point,
-                    'gotPoleLapBonusPoint' : pole_lap_bonusPoint,
-                })
-            try:
-                round_points = leaderboards.objects.filter(
-                    paddock_id=pid,
-                    isActive=1,
-                    user_id=User.objects.filter(
-                        username=paddock_user_dict['paddockUsers'][u])[0].id,
-                    seasonCalendar_id=seasonCalendar.objects.filter(
-                        year=now.year,
-                        raceRound=r)[0].id,
-                    isMidfieldGame=1)[0].roundPoints
-            except:
-                round_points = 0
+            fstring = str(os.path.join(cwd, "leaderboard.json"))
+            f = open(os.path.join(cwd, "leaderboard.json"), "a")
+            f.write(json.dumps(paddock_user_dict))
+            f.close()
+            os.chdir(root_dir)
 
-        fstring = str(os.path.join(cwd, "leaderboard.json"))
-        f = open(os.path.join(cwd, "leaderboard.json"), "a")
-        f.write(json.dumps(paddock_user_dict))
-        f.close()
+            db_entry = jsonFileLocations(
+                id=None, 
+                isGeneralLeaderboard=1,
+                paddock_id=pid,
+                seasonCalendar_id=seasonCalendar.objects.filter(
+                    year=now.year,
+                    raceRound=last_completed_race,
+                    ).latest("id").id,
+                fileLocation=fstring,
+                )
 
-        db_entry = jsonFileLocations(
-            id=None, 
+            db_entry.save()
+
+        file_location = jsonFileLocations.objects.filter(
             isGeneralLeaderboard=1,
             paddock_id=pid,
-            seasonCalendar_id=seasonCalendar.objects.filter(
-                year=now.year,
-                raceRound=last_completed_race,
-                ).latest("id").id,
-            fileLocation=fstring,
-            )
+            ).latest("id").fileLocation
+        json_file = open(file_location, "r+")
+        paddock_user_dict = json.load(json_file)
+        json_file.close()
 
-        db_entry.save()
-
-    file_location = jsonFileLocations.objects.filter(
-        isGeneralLeaderboard=1,
-        paddock_id=pid,
-        ).latest("id").fileLocation
-    json_file = open(file_location, "r+")
-    paddock_user_dict = json.load(json_file)
-    json_file.close()
-
-    json_data = json.dumps(paddock_user_dict)
-    return json_data
+        json_data = json.dumps(paddock_user_dict)
+        return json_data
+    except:
+        os.chdir(root_dir)
 
 def getUserMidfieldPointsByPaddock(pid):
     
@@ -1650,7 +1648,7 @@ def getUserMidfieldPointsByPaddock(pid):
 
     last_completed_race = seasonCalendar.objects.filter(isComplete=1).latest("id").raceRound
 
-    cwd = createJsonFolderStructure(pid, last_completed_race, "ergast")    
+    cwd, root_dir = createJsonFolderStructure(pid, last_completed_race, "ergast")    
 
     try:
         checkVar = jsonFileLocations.objects.filter(
@@ -1994,6 +1992,7 @@ def getUserMidfieldPointsByPaddock(pid):
         f = open(os.path.join(cwd, "midfield-points.json"), "a")
         f.write(json.dumps(data))
         f.close()
+        os.chdir(root_dir)
 
         db_entry = jsonFileLocations(
             id=None, 
@@ -2030,7 +2029,7 @@ def getDriverStandingDataByPaddock(pid):
     if (last_completed_race < 1):
         return
 
-    cwd = createJsonFolderStructure(pid, last_completed_race, "ergast")
+    cwd, root_dir = createJsonFolderStructure(pid, last_completed_race, "ergast")
 
     season_calendarId = seasonCalendar.objects.get(
         year=now.year,
@@ -2233,6 +2232,7 @@ def getDriverStandingDataByPaddock(pid):
         f = open(os.path.join(cwd, "driver-pre-season.json"), "a")
         f.write(json.dumps(data))
         f.close()
+        os.chdir(root_dir)
 
         db_entry = jsonFileLocations(
             id=None, 
@@ -2269,7 +2269,7 @@ def getCombinedPointsByPaddock(pid):
 
     last_completed_race = seasonCalendar.objects.filter(isComplete=1).latest("id").raceRound
 
-    cwd = createJsonFolderStructure(pid, last_completed_race, "ergast")
+    cwd, root_dir = createJsonFolderStructure(pid, last_completed_race, "ergast")
 
     try:
         checkVar = jsonFileLocations.objects.filter(
@@ -2351,6 +2351,7 @@ def getCombinedPointsByPaddock(pid):
         f = open(os.path.join(cwd, "combined-pre-season.json"), "a")
         f.write(json.dumps(data))
         f.close()
+        os.chdir(root_dir)
 
         db_entry = jsonFileLocations(
             id=None, 
@@ -2391,7 +2392,7 @@ def getConstructorStandingDataByPaddock(pid):
         id=paddock_rulesId
     ).numConstructorsOnPreSeasonLeaderboard
 
-    cwd = createJsonFolderStructure(pid, last_completed_race, "ergast")
+    cwd, root_dir = createJsonFolderStructure(pid, last_completed_race, "ergast")
 
     try:
         checkVar = jsonFileLocations.objects.filter(
@@ -2564,6 +2565,7 @@ def getConstructorStandingDataByPaddock(pid):
         f = open(os.path.join(cwd, "constructor-pre-season.json"), "a")
         f.write(json.dumps(data))
         f.close()
+        os.chdir(root_dir)
 
         db_entry = jsonFileLocations(
             id=None, 
@@ -2696,7 +2698,7 @@ def getManualLeaderboardByPaddock(pid):
 
     last_completed_race = seasonCalendar.objects.filter(isComplete=1).latest("id").raceRound
 
-    cwd = createJsonFolderStructure(pid, last_completed_race, "manual")
+    cwd, root_dir = createJsonFolderStructure(pid, last_completed_race, "manual")
 
     try:
         checkVar = jsonManualResultFileLocations.objects.filter(
@@ -3008,12 +3010,11 @@ def getManualLeaderboardByPaddock(pid):
             except:
                 round_points = 0
 
-        #os.chdir(cwd)
         fstring = str(os.path.join(cwd, "leaderboard.json"))
         f = open(os.path.join(cwd, "leaderboard.json"), "a")
         f.write(json.dumps(paddock_user_dict))
         f.close()
-        #os.chdir('/Users/johnpapenfus/Google Drive/John/Coding Projects/F1/f1predictions/')
+        os.chdir(root_dir)
 
         db_entry = jsonManualResultFileLocations(
             id=None, 
@@ -3049,7 +3050,7 @@ def updateManualRacelyPredictionPoints(pid):
     file_found = False
     next_race_round = getNextRaceRound()
     last_completed_race = seasonCalendar.objects.filter(isComplete=1).latest("id").raceRound
-    cwd = createJsonFolderStructure(pid, last_completed_race, "manual")    
+    cwd, root_dir = createJsonFolderStructure(pid, last_completed_race, "manual")    
 
     try:
         checkVar = jsonManualResultFileLocations.objects.filter(
@@ -3344,6 +3345,7 @@ def updateManualRacelyPredictionPoints(pid):
         f = open(os.path.join(cwd, "midfield-points.json"), "a")
         f.write(json.dumps(data))
         f.close()
+        os.chdir(root_dir)
 
         db_entry = jsonManualResultFileLocations(
             id=None, 
