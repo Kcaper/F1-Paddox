@@ -13,9 +13,14 @@ from dateutil import parser
 
 def createJsonFolderStructure(pad_id, race_round, result_type):
 
+    cwd = r'C:\Users\johnp\OneDrive\Documents\GitHub\F1-Paddox'
+    root_dir = cwd
+    
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print(root_dir)
+    print("")
+
     try:
-        cwd = os.getcwd() #r'C:\Users\johnp\OneDrive\Documents\GitHub\F1-Paddox'
-        root_dir = cwd
         season = str(now.year)
         r=str(race_round)
 
@@ -138,7 +143,9 @@ def getPaddockRulesStartRound(paddockId, prediction_type):
 
 def deletePaddockLeaderboardDataByRound(pad_id, race_round):
 
-    cwd = os.getcwd()#r'C:\Users\johnp\OneDrive\Documents\GitHub\F1-Paddox'
+    #this is absolutely no fnishined, the DB needs to be updated in here as well as the file beign delelted also the leaderboard funtions need to be re eun with the correct players. 
+
+    cwd = r'C:\Users\johnp\OneDrive\Documents\GitHub\F1-Paddox'
     root_dir = cwd
     season = str(now.year)
     r=str(race_round)
@@ -148,6 +155,7 @@ def deletePaddockLeaderboardDataByRound(pad_id, race_round):
         
     cwd = os.path.join(os.path.join(cwd, 'json-files', 'leaderboards', 'paddocks', pad_id, season, r))
     shutil.rmtree(cwd)
+    os.chdir(root_dir)
 
     return cwd, root_dir
 

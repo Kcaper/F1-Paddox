@@ -1342,7 +1342,7 @@ def getLeaderboardByPaddock(pid):
     last_completed_race = seasonCalendar.objects.filter(isComplete=1).latest("id").raceRound
 
     cwd, root_dir = createJsonFolderStructure(pid, last_completed_race, "ergast")
-    
+
     try:
         try:
             checkVar = jsonFileLocations.objects.filter(
@@ -1612,6 +1612,7 @@ def getLeaderboardByPaddock(pid):
             f.write(json.dumps(paddock_user_dict))
             f.close()
             os.chdir(root_dir)
+            print("###" + str(root_dir))
 
             db_entry = jsonFileLocations(
                 id=None, 
@@ -1638,6 +1639,8 @@ def getLeaderboardByPaddock(pid):
         return json_data
     except:
         os.chdir(root_dir)
+        print("###!!!!!!!!!!!!!!!" + str(root_dir))
+
 
 def getUserMidfieldPointsByPaddock(pid):
     
@@ -1993,6 +1996,8 @@ def getUserMidfieldPointsByPaddock(pid):
         f.write(json.dumps(data))
         f.close()
         os.chdir(root_dir)
+        print("###" + str(root_dir))
+
 
         db_entry = jsonFileLocations(
             id=None, 
@@ -2233,6 +2238,8 @@ def getDriverStandingDataByPaddock(pid):
         f.write(json.dumps(data))
         f.close()
         os.chdir(root_dir)
+        print("###" + str(root_dir))
+
 
         db_entry = jsonFileLocations(
             id=None, 
@@ -2352,6 +2359,8 @@ def getCombinedPointsByPaddock(pid):
         f.write(json.dumps(data))
         f.close()
         os.chdir(root_dir)
+        print("###" + str(root_dir))
+
 
         db_entry = jsonFileLocations(
             id=None, 
@@ -2566,6 +2575,8 @@ def getConstructorStandingDataByPaddock(pid):
         f.write(json.dumps(data))
         f.close()
         os.chdir(root_dir)
+        print("###" + str(root_dir))
+
 
         db_entry = jsonFileLocations(
             id=None, 
@@ -3015,6 +3026,8 @@ def getManualLeaderboardByPaddock(pid):
         f.write(json.dumps(paddock_user_dict))
         f.close()
         os.chdir(root_dir)
+        print("###" + str(root_dir))
+
 
         db_entry = jsonManualResultFileLocations(
             id=None, 
@@ -3346,6 +3359,8 @@ def updateManualRacelyPredictionPoints(pid):
         f.write(json.dumps(data))
         f.close()
         os.chdir(root_dir)
+        print("###" + str(root_dir))
+
 
         db_entry = jsonManualResultFileLocations(
             id=None, 
