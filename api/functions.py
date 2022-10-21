@@ -15,10 +15,6 @@ def createJsonFolderStructure(pad_id, race_round, result_type):
 
     cwd = r'C:\Users\johnp\OneDrive\Documents\GitHub\F1-Paddox'
     root_dir = cwd
-    
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    print(root_dir)
-    print("")
 
     try:
         season = str(now.year)
@@ -138,7 +134,6 @@ def getPaddockRulesStartRound(paddockId, prediction_type):
             isPreSeasonConstructorRule=1,
         ).latest('id').startRound
 
-    print(racely_rule_start_round)
     return racely_rule_start_round
 
 def deletePaddockLeaderboardDataByRound(pad_id, race_round):
@@ -220,8 +215,6 @@ def midfieldDeadline():
     now = datetime.now()
     
     next_race_round = getNextRaceRound()
-
-    print("THE NEXT RACE ROUND IS " + str(next_race_round))
     
     next_race_id = seasonCalendar.objects.filter(year=now.year, raceRound=next_race_round)[0].id
 
@@ -256,8 +249,6 @@ def createPaddockRules(uid, data):
     now=datetime.now()
     user_status_dict = getUserStatus(uid)
     old_paddock_name=False
-
-    pprint(data)
 
     if paddocks.objects.filter(year=now.year, paddockName=data['paddockName']).count() > 0:
         paddock=paddocks.objects.filter(year=now.year, paddockName=data['paddockName'])
@@ -504,7 +495,6 @@ def createNewPaddock(uid, paddock_name, paddocks_rules_id, max_payers, is_public
     new_paddock.save()
 
 def addUserToPaddock(uid, paddock_name):
-    print("ARE WE GETTING HERE")
     if uid == None:
         return("Error: Please login to create a paddock")
 
@@ -930,9 +920,7 @@ def checkForInterTeamSubstitutes(results_list, season_calendarId):
                 continue
         except Exception as e:
             print(e)
-            print("problem here")
 
-        print(results_list[res])
         constructor_drivers_qset_list = drivers.objects.filter(
             currentTeam_id = constructorId,
             isOnGrid=1,
@@ -956,13 +944,9 @@ def checkForInterTeamSubstitutes(results_list, season_calendarId):
                 number = results_list[result]['Driver']['permanentNumber']
             ).id
 
-            print(results_list[result]["Constructor"]['name'])
-
             driver_id_found_list.append(
                 result_driverId
             )
-
-        print(driver_id_found_list)
 
         unfound_driver_list = constructor_drivers_qset.exclude(
             id__in=driver_id_found_list,
@@ -1034,7 +1018,6 @@ def sortSubstitutes(results_list, season_calendarId):
                     continue
                 substituteDrivers(season_calendarId, incoming_driverId, substituted_out_driver_id_list[0], 0, is_inter_team_sub)
             elif len(substituted_out_driver_id_list) == 2:
-                print(substituted_out_driver_id_list)
                 for d in range(len(substituted_out_driver_id_list)):
                     outgoing_driverId = substituted_out_driver_id_list[d]
                     incoming_driverId = constructor_drivers_in_race_id_list[d]
@@ -1117,11 +1100,6 @@ def getRaceResults(race_round):
                     incomingDriver_id = driverId,
                 ).count() > 0:
 
-                    print(driverSeasonCalendarSubs.objects.filter(
-                        seasonCalendar_id = season_calendarId,
-                        incomingDriver_id = driverId,
-                    ).values_list())
-
                     constructorId = driverSeasonCalendarSubs.objects.get(
                         seasonCalendar_id = season_calendarId,
                         incomingDriver_id = driverId,
@@ -1146,7 +1124,6 @@ def getRaceResults(race_round):
                     fastest_lap_time = "unclassified"
 
                 try:
-                    print()
                     previousResultId = results.objects.filter(driver_id=driverId).filter(seasonCalendar_id=seasonCalendarId)[0].id
                     id_to_post = previousResultId
                     save_type = "updated on"
@@ -1409,8 +1386,6 @@ def getPredictionPointsBySystem(paddock_RulesId, outBy, prediction_type):
             paddockRules_id=paddock_RulesId,
             isRacelyPredictionSystem=1,
         )
-
-        print(outBy)
           
         try:
             return points_system_qset.get(predictionOutBy=outBy).pointsForPrediction
@@ -2341,9 +2316,6 @@ def updateMidfieldPredictionPoints(race_round, paddockId):
 
             except:
                 try:
-                    print(next_season_caledarId)
-                    print(paddockId)
-                    print(next_prediction.id)
                     
                     next_prediction.id = None
                     next_prediction.calendar_id = next_season_caledarId
@@ -2835,8 +2807,6 @@ def updateConstructorStandingPredictionPoints(race_round, paddockId):
                     constructor_id = constructorId,
                 ).position
             except Exception as e:
-                print()
-                print("WHAT HAPPENED HERE")
                 print(uid, constructorId)
                 return
                 pass
@@ -3901,8 +3871,6 @@ def updateAllPredictionPoints():
         last_completed_race_round = 0
 
     next_round_to_capture = last_completed_race_round + 1
-
-    print("NEXT ROUND TO CAPTURE " + str(next_round_to_capture))
 
     for race_round in range(next_round_to_capture, next_race_round + 1, 1):
 

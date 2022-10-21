@@ -27,11 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'ebbe-165-73-60-135.eu.ngrok.io'
+    '0814-165-73-60-135.eu.ngrok.io'
 ]
 # Application definition
 
-CSRF_TRUSTED_ORIGINS = ['https://ebbe-165-73-60-135.eu.ngrok.io','http://127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://0814-165-73-60-135.eu.ngrok.io','http://127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',

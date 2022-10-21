@@ -1182,6 +1182,11 @@ def poleFastPrediction(request):
         if fastest_lap_driver_id_list[i] == None:
             continue
         team = drivers.objects.get(id=fastest_lap_driver_id_list[i]).currentTeam
+        try:
+            driver_flag = flags.objects.get(id=driver.flag_id).flagImgLocation
+        except:
+            driver_flag = None
+
         driver = drivers.objects.get(id=fastest_lap_driver_id_list[i]).seatDrivenBy
         data['fastDrivers'].append({
             "id" : str(driver.id),
@@ -1193,7 +1198,7 @@ def poleFastPrediction(request):
             "constructorName" : team.apiName,
             "icon" : team.constructorIconLocation,
             "constructorIconColor" : team.constructorIconColor,
-            "flag" : flags.objects.get(id=driver.flag_id).flagImgLocation,
+            "flag" : driver_flag,
             "constructorIconColor" : driver.seatDrivenBy.currentTeam.constructorIconColor,
         })
 
@@ -1201,6 +1206,12 @@ def poleFastPrediction(request):
         if pole_driver_id_list[i] == None:
             continue
         team = constructors.objects.get(id=drivers.objects.get(id=pole_driver_id_list[i]).currentTeam_id)
+        
+        try:
+            driver_flag = flags.objects.get(id=driver.flag_id).flagImgLocation
+        except:
+            driver_flag = None
+        
         driver = drivers.objects.get(id=pole_driver_id_list[i]).seatDrivenBy
         data['poleDrivers'].append({
             "id" : str(driver.id),
@@ -1212,7 +1223,7 @@ def poleFastPrediction(request):
             "constructorName" : team.apiName,
             "icon" : team.constructorIconLocation,
             "constructorIconColor" : team.constructorIconColor,
-            "flag" : flags.objects.get(id=driver.flag_id).flagImgLocation,
+            "flag" : driver_flag,
             "constructorIconColor" : driver.seatDrivenBy.currentTeam.constructorIconColor,
         })
 

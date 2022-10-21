@@ -3201,6 +3201,7 @@ def updateManualRacelyPredictionPoints(pid):
                                 fastest_lap_result_driver_id = manualResults.objects.filter(
                                     seasonCalendar_id=season_calendarId,
                                     hasFastestLap = 1,
+                                    paddock_id = pid,
                                 ).latest('id').driver_id
                         else:
                             fastest_lap_result_driver_id = None
@@ -3326,7 +3327,28 @@ def updateManualRacelyPredictionPoints(pid):
                             delta_text = "~"
                             
                             driver_points = 0
+                            driver_is_user_pole_prediction = 0
+                            driver_has_fastest_Lap = 0
+                            driver_has_pole = 0
+                            driver_is_user_fastest_lap_prediction = 0
+                            finishing_driver_icon_color = None
+                            predicted_driver_icon_color = None
+
+                            finishing_driver_icon_color = paddockDrivers.objects.get(id=result_driverId, paddock_id=pid).currentTeam.constructorIconColor
+                            predicted_driver_icon_color = paddockDrivers.objects.get(id=user_prediction_qset[driver].driver_id, paddock_id=pid).currentTeam.constructorIconColor
                             
+                            if manualPredictionPoints.objects.get(user_id=user_qset[user].user_id, seasonCalendar_id = season_calendarId, isPoleSitterPoint = 1).driver_id == user_prediction_qset[driver].driver_id:
+                                driver_is_user_pole_prediction = 1
+
+                            if manualPredictionPoints.objects.get(user_id=user_qset[user].user_id, seasonCalendar_id = season_calendarId, isFastestLapPoint = 1).driver_id == user_prediction_qset[driver].driver_id:
+                                driver_is_user_fastest_lap_prediction = 1
+
+                            if pole_result_driver_id == user_prediction_qset[driver].driver_id:
+                                driver_has_pole = 1
+
+                            if fastest_lap_result_driver_id == result_driverId:
+                                driver_has_fastest_Lap = 1
+
                             data["userPoints"][user_qset[user].user.username][seasonCalendar.objects.filter(year=now.year, raceRound=r)[0].circuit.circuitRef].append({
                                 'id' : result_driverId,
                                 'racePosition' : race_position,
@@ -3340,6 +3362,12 @@ def updateManualRacelyPredictionPoints(pid):
                                 'driverDeltaText' : delta_text,
                                 'singlePointPredictionHit' : singlePointPredictionHit,
                                 'singlePointFinishingHit' : singlePointFinishingHit,
+                                'resultDriverIconColor' : finishing_driver_icon_color,
+                                'predictedDriverIconColor' : predicted_driver_icon_color,
+                                'userPolePrediction' : driver_is_user_pole_prediction,
+                                'userFastestLapPrediction' : driver_is_user_fastest_lap_prediction,
+                                'driverHasPole' : driver_has_pole,
+                                'driverHasFastestLap' : driver_has_fastest_Lap,
                             })
 
                         except Exception as e:
